@@ -694,9 +694,9 @@
           <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="4" rx="1.5" fill="currentColor" opacity=".4"/><rect x="2" y="8" width="11" height="3" rx="1.5" fill="currentColor" opacity=".6"/><rect x="2" y="13" width="14" height="3" rx="1.5" fill="currentColor" opacity=".4"/><circle cx="16" cy="14.5" r="3" fill="currentColor"/><path d="M15 14.5h2M16 13.5v2" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
         </div>
         <p class="module-label">MODUL 02</p>
-        <h3 class="module-name">Formulärbyggaren</h3>
-        <p class="module-desc">Skapa och distribuera egenkontroller, besiktningsprotokoll och checklistor. Direkt i Forma utan PDF-kaos.</p>
-        <span class="module-tag">ACC Build</span>
+        <h3 class="module-name">Rapportbyggaren</h3>
+        <p class="module-desc">Skapa anpassade rapporter för ärenden, formulär, filer och mer. Sammanställ projektdata på ditt sätt.</p>
+        <span class="module-tag">Rapporter</span>
       </div>
 
       <div class="module-card">
@@ -979,6 +979,7 @@ function handleContactSubmit(e) {
 
   // Send notification to hej@formability.se
   const notifyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_NOTIFY, {
+    subject_line: 'Ny intresseanmälan från ' + name,
     user_name: name,
     user_email: email,
     user_company: company || '(ej angivet)',
@@ -1041,6 +1042,7 @@ function handleModuleSubmit(e) {
   status.className = 'form-status';
 
   const notifyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_NOTIFY, {
+    subject_line: 'Nytt modulförslag från ' + name,
     user_name: name,
     user_email: email,
     user_company: '(modulförslag)',
