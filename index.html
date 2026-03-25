@@ -740,6 +740,9 @@
       </div>
 
     </div>
+    <div style="text-align:center; margin-top:40px;">
+      <button class="btn-secondary" onclick="openModuleModal()">Saknar du en modul? →</button>
+    </div>
   </div>
 </div>
 
@@ -895,6 +898,31 @@
   </div>
 </div>
 
+<!-- MODULE SUGGESTION MODAL -->
+<div class="modal-overlay" id="moduleModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModuleModal()">&times;</button>
+    <h3>Saknar du en modul?</h3>
+    <p class="modal-sub">Berätta vad du önskar — vi bygger det som efterfrågas mest.</p>
+    <form id="moduleForm" onsubmit="handleModuleSubmit(event)">
+      <div class="form-group">
+        <label>Namn <span class="req">*</span></label>
+        <input type="text" id="mf-name" required placeholder="Ditt namn">
+      </div>
+      <div class="form-group">
+        <label>E-post <span class="req">*</span></label>
+        <input type="email" id="mf-email" required placeholder="namn@foretag.se">
+      </div>
+      <div class="form-group">
+        <label>Vilken modul saknar du? <span class="req">*</span></label>
+        <textarea id="mf-suggestion" required placeholder="Beskriv funktionen eller modulen du önskar..."></textarea>
+      </div>
+      <button type="submit" class="form-submit" id="mf-submit">Skicka</button>
+      <div class="form-status" id="mf-status"></div>
+    </form>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">
@@ -961,6 +989,7 @@ function handleContactSubmit(e) {
   const replyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_AUTOREPLY, {
     to_email: email,
     user_name: firstName,
+    message_body: 'Kul att du är intresserad av vad Formability kan göra för dig. Vi kommer inom kort att lansera vår tjänst och du kommer att vara bland de första att få veta mer!',
   });
 
   Promise.all([notifyPromise, replyPromise])
@@ -969,6 +998,67 @@ function handleContactSubmit(e) {
       status.textContent = 'Tack ' + firstName + '! Vi hör av oss snart.';
       document.getElementById('contactForm').reset();
       setTimeout(closeContactModal, 2500);
+    })
+    .catch(function(err) {
+      console.error('EmailJS error:', err);
+      status.className = 'form-status error';
+      status.textContent = 'Något gick fel. Maila oss på hej@formability.se istället.';
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = 'Skicka';
+    });
+}
+
+// ── Module Suggestion Modal ──
+function openModuleModal() {
+  document.getElementById('moduleModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModuleModal() {
+  document.getElementById('moduleModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('moduleModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModuleModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModuleModal();
+});
+
+function handleModuleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('mf-submit');
+  const status = document.getElementById('mf-status');
+  const name = document.getElementById('mf-name').value.trim();
+  const email = document.getElementById('mf-email').value.trim();
+  const suggestion = document.getElementById('mf-suggestion').value.trim();
+  const firstName = name.split(' ')[0];
+
+  btn.disabled = true;
+  btn.textContent = 'Skickar...';
+  status.textContent = '';
+  status.className = 'form-status';
+
+  const notifyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_NOTIFY, {
+    user_name: name,
+    user_email: email,
+    user_company: '(modulförslag)',
+    user_message: suggestion,
+  });
+
+  const replyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_AUTOREPLY, {
+    to_email: email,
+    user_name: firstName,
+    message_body: 'Tack för ditt modulförslag! Vi samlar in önskemål och bygger det som efterfrågas mest. Ditt förslag hjälper oss att prioritera rätt.',
+  });
+
+  Promise.all([notifyPromise, replyPromise])
+    .then(function() {
+      status.className = 'form-status success';
+      status.textContent = 'Tack ' + firstName + '! Vi har noterat ditt önskemål.';
+      document.getElementById('moduleForm').reset();
+      setTimeout(closeModuleModal, 2500);
     })
     .catch(function(err) {
       console.error('EmailJS error:', err);
