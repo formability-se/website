@@ -488,6 +488,83 @@
     font-style: italic;
   }
 
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+    padding: 20px;
+  }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.15);
+    padding: 48px 40px 40px;
+    max-width: 480px; width: 100%;
+    position: relative;
+    transform: translateY(16px) scale(0.97);
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+  }
+  .modal-overlay.active .modal { transform: translateY(0) scale(1); }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; cursor: pointer;
+    color: var(--ink-3); font-size: 24px; line-height: 1;
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, color .15s;
+  }
+  .modal-close:hover { background: var(--surface-3); color: var(--ink); }
+  .modal h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .modal p.modal-sub {
+    font-size: 14px; color: var(--ink-3);
+    margin-bottom: 28px; line-height: 1.5;
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block; font-size: 13px; font-weight: 500;
+    color: var(--ink-2); margin-bottom: 6px;
+  }
+  .form-group label .req { color: #EF4444; }
+  .form-group input, .form-group textarea {
+    width: 100%; padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px; font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink); background: var(--surface);
+    transition: border-color .15s, box-shadow .15s;
+    outline: none;
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-submit {
+    width: 100%; padding: 12px 24px; margin-top: 8px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 15px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: background .15s, transform .1s;
+  }
+  .form-submit:hover { background: #3730A3; transform: translateY(-1px); }
+  .form-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+  .form-status {
+    text-align: center; margin-top: 16px;
+    font-size: 14px; line-height: 1.5;
+  }
+  .form-status.success { color: #059669; }
+  .form-status.error { color: #EF4444; }
+
   /* ── FOOTER ── */
   footer {
     padding: 40px;
@@ -539,7 +616,7 @@
     <a href="#extension">Tillägg</a>
     <a href="#priser">Priser</a>
     <a href="#om">Om</a>
-    <a href="#kontakt" class="nav-cta">Håll mig uppdaterad</a>
+    <button class="nav-cta" onclick="openContactModal()">Håll mig uppdaterad</button>
   </div>
 </nav>
 
@@ -561,7 +638,7 @@
   </p>
 
   <div class="hero-ctas">
-    <a href="#kontakt" class="btn-primary">Håll mig uppdaterad</a>
+    <button class="btn-primary" onclick="openContactModal()">Håll mig uppdaterad</button>
     <a href="#modules" class="btn-secondary">Se alla moduler →</a>
   </div>
 
@@ -786,8 +863,37 @@
 <section class="cta-section" id="kontakt">
   <h2 class="section-title">Redo att forma<br>byggbranschen?</h2>
   <p class="section-sub">Starta en kostnadsfri provperiod och se hur Formability ser ut i ditt Forma-projekt.</p>
-  <a href="mailto:hej@formability.se" class="btn-primary">Håll mig uppdaterad</a>
+  <button class="btn-primary" onclick="openContactModal()">Håll mig uppdaterad</button>
 </section>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeContactModal()">&times;</button>
+    <h3>Håll mig uppdaterad</h3>
+    <p class="modal-sub">Fyll i dina uppgifter så hör vi av oss när Formability lanseras.</p>
+    <form id="contactForm" onsubmit="handleContactSubmit(event)">
+      <div class="form-group">
+        <label>Namn <span class="req">*</span></label>
+        <input type="text" id="cf-name" required placeholder="Ditt namn">
+      </div>
+      <div class="form-group">
+        <label>E-post <span class="req">*</span></label>
+        <input type="email" id="cf-email" required placeholder="namn@foretag.se">
+      </div>
+      <div class="form-group">
+        <label>Företag</label>
+        <input type="text" id="cf-company" placeholder="Ditt företag (valfritt)">
+      </div>
+      <div class="form-group">
+        <label>Meddelande</label>
+        <textarea id="cf-message" placeholder="Berätta gärna vad du är mest nyfiken på..."></textarea>
+      </div>
+      <button type="submit" class="form-submit" id="cf-submit">Skicka</button>
+      <div class="form-status" id="cf-status"></div>
+    </form>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -801,7 +907,80 @@
   <div class="footer-right">© 2025 Formability · Göteborg, Sverige</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+// ── EmailJS Config ──
+// TODO: Replace these with your actual EmailJS credentials
+const EMAILJS_PUBLIC_KEY = 'TCG67WDH3_RPqu2Ut';
+const EMAILJS_SERVICE_ID = 'service_trk3ry1';
+const EMAILJS_TEMPLATE_AUTOREPLY = 'template_t361sqj';
+const EMAILJS_TEMPLATE_NOTIFY = 'template_nqhtnp3';
+
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+// ── Contact Modal ──
+function openContactModal() {
+  document.getElementById('contactModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeContactModal() {
+  document.getElementById('contactModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('contactModal').addEventListener('click', function(e) {
+  if (e.target === this) closeContactModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeContactModal();
+});
+
+function handleContactSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('cf-submit');
+  const status = document.getElementById('cf-status');
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const company = document.getElementById('cf-company').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+  const firstName = name.split(' ')[0];
+
+  btn.disabled = true;
+  btn.textContent = 'Skickar...';
+  status.textContent = '';
+  status.className = 'form-status';
+
+  // Send notification to hej@formability.se
+  const notifyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_NOTIFY, {
+    user_name: name,
+    user_email: email,
+    user_company: company || '(ej angivet)',
+    user_message: message || '(inget meddelande)',
+  });
+
+  // Send auto-reply to user
+  const replyPromise = emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_AUTOREPLY, {
+    to_email: email,
+    user_name: firstName,
+  });
+
+  Promise.all([notifyPromise, replyPromise])
+    .then(function() {
+      status.className = 'form-status success';
+      status.textContent = 'Tack ' + firstName + '! Vi hör av oss snart.';
+      document.getElementById('contactForm').reset();
+      setTimeout(closeContactModal, 2500);
+    })
+    .catch(function(err) {
+      console.error('EmailJS error:', err);
+      status.className = 'form-status error';
+      status.textContent = 'Något gick fel. Maila oss på hej@formability.se istället.';
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = 'Skicka';
+    });
+}
+
 function handlePlay() {
   const w = document.getElementById('video-wrapper');
   w.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0F172A;color:#475569;font-family:DM Sans,sans-serif;font-size:14px;flex-direction:column;gap:12px;border-radius:20px;"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="8" stroke="#334155" stroke-width="1.5"/><path d="M19 15l14 9-14 9V15z" fill="#4F46E5"/></svg><span style="color:#64748B;">Din produktvideo här</span></div>';
