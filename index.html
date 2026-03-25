@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formability — The skin and heart of Forma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #4F46E5;
+    --accent-light: #EEF0FF;
+    --accent-muted: #818CF8;
+    --ink: #0F172A;
+    --ink-2: #334155;
+    --ink-3: #64748B;
+    --ink-4: #94A3B8;
+    --surface: #FFFFFF;
+    --surface-2: #F8FAFC;
+    --surface-3: #F1F5F9;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
+    --radius: 12px;
+    --radius-lg: 20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 0.5px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 40px;
+    gap: 0;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .nav-mark { display: flex; flex-wrap: wrap; gap: 3px; width: 22px; }
+  .nav-mark span {
+    width: 9px; height: 9px; border-radius: 2.5px;
+    background: var(--accent); display: block;
+    transform-origin: center;
+    animation: nav-pop 0.4s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .nav-mark span:nth-child(1) { animation-delay: .05s; }
+  .nav-mark span:nth-child(2) { animation-delay: .10s; }
+  .nav-mark span:nth-child(3) { animation-delay: .15s; }
+  .nav-mark span:nth-child(4) { animation-delay: .20s; opacity: .55; }
+  .nav-mark span:nth-child(5) { animation-delay: .25s; display: none; }
+  .nav-mark span:nth-child(6) { animation-delay: .30s; opacity: .25; }
+  .nav-mark span:nth-child(4) {
+    animation: nav-pop 0.4s cubic-bezier(.34,1.56,.64,1) both .20s,
+               heartbeat 2.4s ease-in-out 1.2s infinite;
+    opacity: .55;
+  }
+  @keyframes nav-pop {
+    from { transform: scale(0); opacity: 0; }
+    70%  { transform: scale(1.2); }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); opacity: .55; }
+    8%  { transform: scale(1.4); opacity: 1; }
+    16% { transform: scale(1); opacity: .55; }
+    26% { transform: scale(1.25); opacity: .9; }
+    36% { transform: scale(1); opacity: .55; }
+  }
+  .nav-wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--ink); letter-spacing: -0.4px;
+    opacity: 0; animation: fade-up 0.5s ease both 0.5s;
+  }
+  .nav-wordmark b { color: var(--accent); font-weight: 400; }
+  .nav-links { display: flex; gap: 32px; margin-left: auto; align-items: center; }
+  .nav-links a {
+    font-size: 14px; color: var(--ink-3); text-decoration: none;
+    transition: color .15s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    margin-left: 24px;
+    background: var(--accent); color: #ffffff !important;
+    border: none; border-radius: 8px;
+    padding: 8px 20px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background .15s, transform .1s;
+    text-decoration: none; display: inline-block;
+  }
+  .nav-cta:hover { background: #3730A3; color: #ffffff !important; transform: translateY(-1px); }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 120px 40px 80px;
+    text-align: center;
+    position: relative;
+    background: var(--surface);
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent-light);
+    border: 0.5px solid #C7D2FE;
+    border-radius: 100px;
+    padding: 5px 14px;
+    font-size: 12px; font-weight: 500;
+    color: #3730A3; letter-spacing: 0.3px;
+    margin-bottom: 32px;
+    opacity: 0; animation: fade-up 0.5s ease both 0.2s;
+  }
+  .eyebrow-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .5; transform: scale(0.8); }
+  }
+
+  .hero-logo-mark {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    width: 88px; margin: 0 auto 40px;
+    opacity: 0; animation: fade-up 0.4s ease both 0.1s;
+  }
+  .hero-logo-mark span {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--accent); display: block;
+    transform-origin: center;
+    animation: hero-pop 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .hero-logo-mark span:nth-child(1) { animation-delay: .1s; }
+  .hero-logo-mark span:nth-child(2) { animation-delay: .18s; }
+  .hero-logo-mark span:nth-child(3) { animation-delay: .26s; }
+  .hero-logo-mark span:nth-child(4) { animation-delay: .34s;
+    animation: hero-pop 0.5s cubic-bezier(.34,1.56,.64,1) both .34s,
+               heartbeat-hero 2.4s ease-in-out 1.4s infinite;
+    opacity: .55;
+  }
+  .hero-logo-mark span:nth-child(5) { display: none; }
+  .hero-logo-mark span:nth-child(6) { animation-delay: .42s; opacity: .25; }
+
+  @keyframes hero-pop {
+    from { transform: scale(0); }
+    70%  { transform: scale(1.15); }
+    to   { transform: scale(1); }
+  }
+  @keyframes heartbeat-hero {
+    0%, 100% { transform: scale(1); opacity: .55; }
+    8%  { transform: scale(1.35); opacity: 1; }
+    16% { transform: scale(1); opacity: .55; }
+    26% { transform: scale(1.2); opacity: .9; }
+    36% { transform: scale(1); opacity: .55; }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: var(--ink);
+    max-width: 800px;
+    margin: 0 auto 16px;
+    opacity: 0; animation: fade-up 0.6s ease both 0.35s;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-tagline {
+    font-size: 18px; font-weight: 300;
+    color: var(--ink-3); line-height: 1.6;
+    max-width: 520px; margin: 0 auto 40px;
+    opacity: 0; animation: fade-up 0.6s ease both 0.45s;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 12px; justify-content: center; align-items: center;
+    margin-bottom: 64px;
+    opacity: 0; animation: fade-up 0.6s ease both 0.55s;
+  }
+  .btn-primary {
+    background: var(--accent); color: white;
+    border: none; border-radius: 10px;
+    padding: 14px 28px; font-size: 15px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background .15s, transform .1s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { background: #3730A3; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--ink-2);
+    border: 0.5px solid var(--border-strong); border-radius: 10px;
+    padding: 14px 28px; font-size: 15px; font-weight: 400;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: border-color .15s, background .15s;
+    text-decoration: none;
+  }
+  .btn-secondary:hover { background: var(--surface-2); border-color: var(--accent); }
+
+  /* ── VIDEO PLACEHOLDER ── */
+  .video-wrapper {
+    width: 100%; max-width: 900px; margin: 0 auto;
+    border-radius: 20px;
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    background: var(--surface-3);
+    aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    cursor: pointer;
+    opacity: 0; animation: fade-up 0.8s ease both 0.65s;
+    box-shadow: 0 2px 40px rgba(79,70,229,.08), 0 1px 3px rgba(0,0,0,.06);
+  }
+  .video-inner {
+    position: absolute; inset: 0;
+    background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  .video-mockup-bar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 36px; background: #F7F8FA;
+    border-bottom: 0.5px solid var(--border);
+    display: flex; align-items: center; padding: 0 14px; gap: 6px;
+  }
+  .video-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .video-url {
+    flex: 1; height: 20px; background: var(--border);
+    border-radius: 4px; margin: 0 12px; max-width: 260px;
+  }
+  .video-content {
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    padding-top: 36px; height: 100%;
+  }
+  .play-btn {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--accent); color: white;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .15s, background .15s;
+    cursor: pointer;
+  }
+  .play-btn:hover { transform: scale(1.08); background: #3730A3; }
+  .play-btn svg { margin-left: 3px; }
+  .video-caption { font-size: 13px; color: var(--ink-4); }
+
+  /* ── LOGOS ── */
+  .logos-strip {
+    padding: 48px 40px;
+    text-align: center;
+    border-bottom: 0.5px solid var(--border);
+    border-top: 0.5px solid var(--border);
+  }
+  .logos-label { font-size: 12px; color: var(--ink-4); letter-spacing: 1.5px; margin-bottom: 24px; }
+  .logos-row { display: flex; gap: 48px; justify-content: center; align-items: center; flex-wrap: wrap; }
+  .logo-pill {
+    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
+    color: var(--ink-4); letter-spacing: 1px;
+    padding: 8px 18px; border: 0.5px solid var(--border); border-radius: 100px;
+  }
+
+  /* ── FEATURES ── */
+  .section { padding: 96px 40px; max-width: 1200px; margin: 0 auto; }
+
+  .section-eyebrow {
+    font-size: 12px; font-weight: 500; color: var(--accent);
+    letter-spacing: 2px; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 48px); font-weight: 800;
+    line-height: 1.1; letter-spacing: -1px;
+    color: var(--ink); margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 17px; font-weight: 300;
+    color: var(--ink-3); max-width: 480px; line-height: 1.6;
+    margin-bottom: 56px;
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .module-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    transition: border-color .2s, transform .2s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .module-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--accent-light) 0%, transparent 60%);
+    opacity: 0; transition: opacity .3s;
+  }
+  .module-card:hover { border-color: #C7D2FE; transform: translateY(-2px); }
+  .module-card:hover::before { opacity: 1; }
+  .module-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--accent-light); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px; position: relative;
+  }
+  .module-icon svg { width: 20px; height: 20px; }
+  .module-label {
+    font-size: 10px; font-weight: 500; color: var(--accent);
+    letter-spacing: 1.5px; margin-bottom: 6px;
+  }
+  .module-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700; color: var(--ink);
+    margin-bottom: 8px; letter-spacing: -0.3px;
+  }
+  .module-desc { font-size: 14px; color: var(--ink-3); line-height: 1.6; }
+  .module-tag {
+    display: inline-block; margin-top: 14px;
+    font-size: 11px; color: var(--accent-muted);
+    background: var(--accent-light); border-radius: 100px;
+    padding: 3px 10px;
+  }
+
+  /* ── EXTENSION SECTION ── */
+  .ext-section {
+    background: var(--ink);
+    padding: 96px 40px;
+    overflow: hidden;
+    position: relative;
+  }
+  .ext-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(99,102,241,.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .ext-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .ext-copy .section-title { color: white; }
+  .ext-copy .section-sub { color: #64748B; }
+  .ext-copy .section-eyebrow { color: var(--accent-muted); }
+  .ext-features { display: flex; flex-direction: column; gap: 20px; margin-top: 32px; }
+  .ext-feat {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .ext-feat-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(99,102,241,.15); color: var(--accent-muted);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ext-feat-icon svg { width: 16px; height: 16px; }
+  .ext-feat-title { font-size: 14px; font-weight: 500; color: #E2E8F0; margin-bottom: 3px; }
+  .ext-feat-desc { font-size: 13px; color: #64748B; line-height: 1.5; }
+
+  .ext-mockup {
+    background: #0F172A;
+    border: 0.5px solid #1E293B;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,.4);
+  }
+  .ext-mock-topbar {
+    height: 36px; background: #1A1A2E;
+    display: flex; align-items: center; padding: 0 14px; gap: 6px;
+    border-bottom: 0.5px solid #1E293B;
+  }
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .ext-mock-body { display: flex; }
+  .ext-mock-sidebar {
+    width: 44px; background: #1A1A2E;
+    border-right: 0.5px solid #1E293B;
+    padding: 12px 0; display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+  }
+  .mock-icon-btn {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #475569;
+  }
+  .mock-icon-btn.active { background: #4F46E5; color: white; }
+  .mock-icon-btn svg { width: 14px; height: 14px; }
+  .ext-mock-canvas {
+    flex: 1; background: #E8E5DF;
+    min-height: 280px; padding: 0;
+    display: flex; flex-direction: column;
+  }
+  .mock-canvas-bar {
+    height: 32px; background: #F5F3EF;
+    border-bottom: 0.5px solid #D8D5CF;
+    display: flex; align-items: center; padding: 0 10px;
+    font-size: 10px; color: #888;
+  }
+  .mock-canvas-body {
+    flex: 1; display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px; padding: 10px;
+  }
+  .mock-tile { background: #DDD9D2; border-radius: 4px; }
+  .mock-tile.tall { grid-row: 1 / 3; }
+  .ext-mock-nav {
+    width: 200px; background: #0F172A;
+    border-left: 0.5px solid #1E293B;
+    padding: 10px 0;
+    display: flex; flex-direction: column;
+  }
+  .mock-nav-header {
+    padding: 8px 12px 6px;
+    border-bottom: 0.5px solid #1E293B;
+    display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+  }
+  .mock-nav-dots { display: flex; flex-wrap: wrap; gap: 2px; width: 14px; }
+  .mock-nav-dots span { width: 5px; height: 5px; border-radius: 1px; background: #6366F1; display: block; }
+  .mock-nav-dots span:nth-child(4) { opacity: .5; }
+  .mock-nav-dots span:nth-child(5) { display: none; }
+  .mock-nav-dots span:nth-child(6) { opacity: .2; }
+  .mock-nav-title { font-size: 11px; font-weight: 600; color: white; }
+  .mock-nav-title b { color: #818CF8; font-weight: 300; }
+  .mock-nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 12px; margin: 1px 6px; border-radius: 5px;
+    font-size: 11px; color: #64748B;
+    cursor: pointer;
+  }
+  .mock-nav-item.active { background: #1E293B; color: #E2E8F0; }
+  .mock-nav-item svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .mock-nav-badge {
+    margin-left: auto; background: #EF4444;
+    color: white; font-size: 9px; font-weight: 600;
+    padding: 1px 4px; border-radius: 8px;
+  }
+
+  /* ── PROOF ── */
+  .proof-section {
+    padding: 96px 40px;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    border-top: 0.5px solid var(--border);
+  }
+  .proof-stat { }
+  .proof-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px; font-weight: 800;
+    color: var(--accent); letter-spacing: -2px; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .proof-label { font-size: 15px; color: var(--ink-2); font-weight: 400; }
+  .proof-sub { font-size: 13px; color: var(--ink-4); margin-top: 4px; line-height: 1.5; }
+
+  /* ── CTA BLOCK ── */
+  .cta-section {
+    padding: 96px 40px;
+    text-align: center;
+    border-top: 0.5px solid var(--border);
+    background: var(--surface-2);
+  }
+  .cta-section .section-title { margin: 0 auto 16px; max-width: 600px; }
+  .cta-section .section-sub { margin: 0 auto 40px; max-width: 440px; }
+  .cta-tagline {
+    font-size: 13px; color: var(--ink-4); margin-top: 16px;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px;
+    border-top: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo { display: flex; align-items: center; gap: 10px; }
+  .footer-logo-mark { display: flex; flex-wrap: wrap; gap: 2px; width: 18px; }
+  .footer-logo-mark span { width: 7px; height: 7px; border-radius: 2px; background: var(--accent); display: block; }
+  .footer-logo-mark span:nth-child(4) { opacity: .5; }
+  .footer-logo-mark span:nth-child(5) { display: none; }
+  .footer-logo-mark span:nth-child(6) { opacity: .2; }
+  .footer-wordmark { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--ink); }
+  .footer-wordmark b { color: var(--accent); font-weight: 400; }
+  .footer-right { font-size: 13px; color: var(--ink-4); }
+
+  /* ── BG TEXTURE ── */
+  .hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+    background: linear-gradient(to bottom, transparent, var(--surface));
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: .4;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-mark">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    <span class="nav-wordmark">forma<b>bility</b></span>
+  </a>
+  <div class="nav-links">
+    <a href="#modules">Moduler</a>
+    <a href="#extension">Tillägg</a>
+    <a href="#priser">Priser</a>
+    <a href="#om">Om</a>
+    <a href="#kontakt" class="nav-cta">Håll mig uppdaterad</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+
+  <div class="hero-logo-mark">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+
+
+  <h1>The skin and<br><em>heart</em> of Forma</h1>
+
+  <p class="hero-tagline">
+    Formability bäddar in direkt i din Forma-miljö och
+    förstärker det med verktyg byggda specifikt för din vardag.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#kontakt" class="btn-primary">Håll mig uppdaterad</a>
+    <a href="#modules" class="btn-secondary">Se alla moduler →</a>
+  </div>
+
+  <div class="video-wrapper" id="video-wrapper">
+    <div class="video-inner">
+      <div class="video-mockup-bar">
+        <div class="video-dot" style="background:#FF5F57;"></div>
+        <div class="video-dot" style="background:#FFBD2E;"></div>
+        <div class="video-dot" style="background:#28CA41;"></div>
+        <div class="video-url"></div>
+      </div>
+      <div class="video-content">
+        <div class="play-btn" onclick="handlePlay()">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M7 4l12 7-12 7V4z" fill="white"/>
+          </svg>
+        </div>
+        <span class="video-caption">Se Formability i aktion — 2 min</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos-strip">
+  <p class="logos-label">INTEGRERAR MED</p>
+  <div class="logos-row">
+    <img src="data:image/webp;base64,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" alt="Autodesk Forma" style="height:140px;filter:grayscale(1) opacity(0.45);">
+  </div>
+</div>
+
+<!-- MODULES -->
+<div id="modules">
+  <div class="section">
+    <p class="section-eyebrow">MODULER</p>
+    <h2 class="section-title">Byggt för byggbranschen.<br>Ingenting du inte behöver.</h2>
+    <p class="section-sub">Sex fokuserade verktyg som kompletterar Forma — fungerar var för sig och blir kraftfullare tillsammans.</p>
+
+    <div class="modules-grid">
+
+      <div class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor" opacity=".5"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor" opacity=".3"/></svg>
+        </div>
+        <p class="module-label">MODUL 01</p>
+        <h3 class="module-name">Project Home</h3>
+        <p class="module-desc">En anpassningsbar startsida per projekt som ersätter Formas generiska vy. Rätt info, rätt roll, direkt.</p>
+        <span class="module-tag">Webbläsartillägg</span>
+      </div>
+
+      <div class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="4" rx="1.5" fill="currentColor" opacity=".4"/><rect x="2" y="8" width="11" height="3" rx="1.5" fill="currentColor" opacity=".6"/><rect x="2" y="13" width="14" height="3" rx="1.5" fill="currentColor" opacity=".4"/><circle cx="16" cy="14.5" r="3" fill="currentColor"/><path d="M15 14.5h2M16 13.5v2" stroke="white" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <p class="module-label">MODUL 02</p>
+        <h3 class="module-name">Formulärbyggaren</h3>
+        <p class="module-desc">Skapa och distribuera egenkontroller, besiktningsprotokoll och checklistor. Direkt i Forma utan PDF-kaos.</p>
+        <span class="module-tag">ACC Build</span>
+      </div>
+
+      <div class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M3 15L7 10L11 13L16 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="6" r="2" fill="currentColor"/></svg>
+        </div>
+        <p class="module-label">MODUL 03</p>
+        <h3 class="module-name">Ärendetavlan</h3>
+        <p class="module-desc">Kanban, kalender och listvy för alla ärenden och avvikelser — kopplade till modellen, inte vid sidan om.</p>
+        <span class="module-tag">Kanban · Kalender</span>
+      </div>
+
+      <div class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="16" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M2 7h16M6 2v4M14 2v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 11h4M6 14h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <p class="module-label">MODUL 04</p>
+        <h3 class="module-name">Dagboken</h3>
+        <p class="module-desc">Digital byggdagbok som uppfyller PBL-krav. Lägg till foton, väder och personal — allt länkades till rätt dag.</p>
+        <span class="module-tag">Lagkrav PBL</span>
+      </div>
+
+      <div class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 20 20" fill="none"><path d="M4 16V4M8 16V9M12 16V6M16 16V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <p class="module-label">MODUL 05</p>
+        <h3 class="module-name">Kontrollplanen</h3>
+        <p class="module-desc">Digitalisera kontrollprogram och kvalitetsplaner. Koppla kontrollpunkter till modellobjekt och formulär.</p>
+        <span class="module-tag">ISO 9001</span>
+      </div>
+
+      <div class="module-card">
+        <div class="module-icon">
+          <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor" opacity=".4"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor" opacity=".4"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor" opacity=".4"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor" opacity=".2"/><path d="M9.5 5.5l1 1L13 4M9.5 14.5l1 1L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="module-label">MODUL 06</p>
+        <h3 class="module-name">Modellvalideraren</h3>
+        <p class="module-desc">Validera IFC-modeller mot projektspecifika krav. Hitta avvikelser innan de når bygget.</p>
+        <span class="module-tag">IFC · BIM</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- EXTENSION -->
+<section class="ext-section" id="extension">
+  <div class="ext-inner">
+    <div class="ext-copy">
+      <p class="section-eyebrow">WEBBLÄSARTILLÄGG</p>
+      <h2 class="section-title">Formability lever<br>inuti Forma</h2>
+      <p class="section-sub">Ingen ny flik. Ingen ny inloggning. Installera tillägget och Formability förstärker din befintliga Forma-miljö direkt.</p>
+      <div class="ext-features">
+        <div class="ext-feat">
+          <div class="ext-feat-icon">
+            <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="currentColor" opacity=".4"/></svg>
+          </div>
+          <div>
+            <p class="ext-feat-title">Kontextuell navigator</p>
+            <p class="ext-feat-desc">En sidopanel som alltid är tillgänglig med snabbåtkomst till alla moduler, per projekt, per roll.</p>
+          </div>
+        </div>
+        <div class="ext-feat">
+          <div class="ext-feat-icon">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M8 2v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <p class="ext-feat-title">Anpassningsbar startsida</p>
+            <p class="ext-feat-desc">Byt ut Formas standardvy mot en dashboard som visar precis vad din roll behöver.</p>
+          </div>
+        </div>
+        <div class="ext-feat">
+          <div class="ext-feat-icon">
+            <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <p class="ext-feat-title">Realtidsbadges</p>
+            <p class="ext-feat-desc">Se öppna ärenden, väntande formulär och avvikelser direkt i navigatorn utan att öppna dem.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ext-mockup">
+      <div class="ext-mock-topbar">
+        <div class="mock-dot" style="background:#FF5F57;"></div>
+        <div class="mock-dot" style="background:#FFBD2E;"></div>
+        <div class="mock-dot" style="background:#28CA41;"></div>
+      </div>
+      <div class="ext-mock-body">
+        <div class="ext-mock-sidebar">
+          <div class="mock-icon-btn active"><svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="4" height="4" rx="1" fill="currentColor"/><rect x="7" y="1" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="1" y="7" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="7" y="7" width="4" height="4" rx="1" fill="currentColor" opacity=".2"/></svg></div>
+          <div class="mock-icon-btn"><svg viewBox="0 0 14 14" fill="none"><path d="M2 3h10M2 7h10M2 11h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="mock-icon-btn"><svg viewBox="0 0 14 14" fill="none"><path d="M3 11L11 3M11 3H7M11 3V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div style="flex:1;"></div>
+          <div class="mock-icon-btn" style="background:#6366F133;color:#818CF8;">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="4" height="4" rx="1" fill="currentColor"/><rect x="7" y="1" width="4" height="4" rx="1" fill="currentColor"/><rect x="1" y="7" width="4" height="4" rx="1" fill="currentColor"/><rect x="7" y="7" width="4" height="4" rx="1" fill="currentColor" opacity=".4"/></svg>
+          </div>
+        </div>
+        <div class="ext-mock-canvas">
+          <div class="mock-canvas-bar">Västra Hamnen etapp 3 / Modeller</div>
+          <div class="mock-canvas-body">
+            <div class="mock-tile tall"></div>
+            <div class="mock-tile"></div>
+            <div class="mock-tile"></div>
+            <div class="mock-tile"></div>
+            <div class="mock-tile"></div>
+          </div>
+        </div>
+        <div class="ext-mock-nav">
+          <div class="mock-nav-header">
+            <div class="mock-nav-dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <span class="mock-nav-title">forma<b>bility</b></span>
+          </div>
+          <div class="mock-nav-item active">
+            <svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="4" height="4" rx="1" fill="currentColor"/><rect x="7" y="1" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="1" y="7" width="4" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>
+            Project home
+          </div>
+          <div class="mock-nav-item">
+            <svg viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="3" rx="1" fill="currentColor" opacity=".5"/><rect x="1" y="6" width="7" height="2" rx="1" fill="currentColor" opacity=".4"/></svg>
+            Formulär
+            <span class="mock-nav-badge" style="background:#F59E0B;">2</span>
+          </div>
+          <div class="mock-nav-item">
+            <svg viewBox="0 0 12 12" fill="none"><path d="M2 9L5 6L7 8L10 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Ärenden
+            <span class="mock-nav-badge">14</span>
+          </div>
+          <div class="mock-nav-item">
+            <svg viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.2" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10M4 1v3M8 1v3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+            Dagbok
+          </div>
+          <div class="mock-nav-item">
+            <svg viewBox="0 0 12 12" fill="none"><path d="M2 2h8v8H2z" stroke="currentColor" stroke-width="1.1" fill="none"/><path d="M2 5h8M5 2v8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+            Kontrollplan
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<div class="proof-section">
+  <div class="proof-stat">
+    <div class="proof-number">0</div>
+    <p class="proof-label">Nya system att lära sig</p>
+    <p class="proof-sub">Formability lever i Forma. Inga nya inloggningar, ingen ny plattform.</p>
+  </div>
+  <div class="proof-stat">
+    <div class="proof-number">6</div>
+    <p class="proof-label">Fokuserade moduler</p>
+    <p class="proof-sub">Varje modul gör en sak riktigt bra — och hänger ihop med de andra.</p>
+  </div>
+  <div class="proof-stat">
+    <div class="proof-number">∞</div>
+    <p class="proof-label">Anpassningsmöjligheter</p>
+    <p class="proof-sub">Project home, dashboards och rapporter är helt konfigurerbara per roll och projekt.</p>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section" id="kontakt">
+  <h2 class="section-title">Redo att forma<br>byggbranschen?</h2>
+  <p class="section-sub">Starta en kostnadsfri provperiod och se hur Formability ser ut i ditt Forma-projekt.</p>
+  <a href="mailto:hej@formability.se" class="btn-primary">Håll mig uppdaterad</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="footer-logo-mark">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    <span class="footer-wordmark">forma<b>bility</b></span>
+  </div>
+  <div class="footer-right">© 2025 Formability · Göteborg, Sverige</div>
+</footer>
+
+<script>
+function handlePlay() {
+  const w = document.getElementById('video-wrapper');
+  w.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0F172A;color:#475569;font-family:DM Sans,sans-serif;font-size:14px;flex-direction:column;gap:12px;border-radius:20px;"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="8" stroke="#334155" stroke-width="1.5"/><path d="M19 15l14 9-14 9V15z" fill="#4F46E5"/></svg><span style="color:#64748B;">Din produktvideo här</span></div>';
+}
+
+document.querySelectorAll('.view-tab').forEach(t => {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.view-tab').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
