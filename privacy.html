@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Integritetspolicy — Formability</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #4F46E5;
+    --ink: #0F172A;
+    --ink-2: #334155;
+    --ink-3: #64748B;
+    --surface: #FFFFFF;
+    --surface-2: #F8FAFC;
+    --border: #E2E8F0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px 120px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+    margin-bottom: 32px;
+  }
+  .back:hover { text-decoration: underline; }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .date {
+    font-size: 14px;
+    color: var(--ink-3);
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 40px;
+    margin-bottom: 12px;
+  }
+  p, li {
+    font-size: 15px;
+    color: var(--ink-2);
+    margin-bottom: 12px;
+  }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  strong { color: var(--ink); }
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--ink-3);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back">&larr; Tillbaka till formability.se</a>
+
+<h1>Integritetspolicy</h1>
+<p class="date">Senast uppdaterad: 31 mars 2026</p>
+
+<p>Formability ("vi", "oss") utvecklar och driver ett webbläsartillägg och tillhörande tjänster för Autodesk Construction Cloud. Vi värnar om din integritet och hanterar dina personuppgifter i enlighet med GDPR (EU 2016/679).</p>
+
+<h2>1. Vilka uppgifter samlar vi in?</h2>
+<p>Vi samlar in minimalt med personuppgifter för att kunna leverera tjänsten:</p>
+<ul>
+  <li><strong>Autodesk-profil:</strong> Namn, e-postadress och profilbild — hämtas via Autodesk OAuth vid inloggning.</li>
+  <li><strong>Autodesk-ID:</strong> Ditt unika Autodesk-konto-ID — används för att koppla dig till ditt Formability-konto.</li>
+  <li><strong>Användningsdata:</strong> Vilken modul du öppnar och när (tidsstämpel) — används för statistik och produktutveckling.</li>
+</ul>
+<p>Vi samlar <strong>inte</strong> in lösenord, bankuppgifter, projektinnehåll, modelldata, ritningar, kommentarer eller andra projektspecifika data.</p>
+
+<h2>2. Varför samlar vi in uppgifter?</h2>
+<ul>
+  <li><strong>Leverera tjänsten:</strong> Autentisera dig, visa rätt projekt och moduler.</li>
+  <li><strong>Licenshantering:</strong> Kontrollera att ditt projekt har en aktiv licens.</li>
+  <li><strong>Produktutveckling:</strong> Förstå vilka moduler som används mest för att prioritera utveckling.</li>
+</ul>
+
+<h2>3. Var lagras dina uppgifter?</h2>
+<p>All data lagras inom EU:</p>
+<ul>
+  <li><strong>Databas:</strong> Railway Postgres i Frankfurt, Tyskland.</li>
+  <li><strong>Backend:</strong> Railway i Frankfurt, Tyskland.</li>
+  <li><strong>Webbapp:</strong> Vercel (Account Center) — serverad från EU-noder.</li>
+</ul>
+<p>Vi överför inte data utanför EU/EES.</p>
+
+<h2>4. Vem har tillgång till dina uppgifter?</h2>
+<p>Dina uppgifter delas inte med tredje part i marknadsföringssyfte. Följande parter har teknisk tillgång:</p>
+<ul>
+  <li><strong>Railway:</strong> Infrastrukturleverantör (backend + databas). <a href="https://railway.app/legal/privacy" target="_blank">Railways integritetspolicy</a>.</li>
+  <li><strong>Vercel:</strong> Hosting av Account Center. <a href="https://vercel.com/legal/privacy-policy" target="_blank">Vercels integritetspolicy</a>.</li>
+  <li><strong>Autodesk:</strong> Vi använder Autodesk Platform Services API för att hämta projektdata. Din Autodesk-session hanteras av Autodesk.</li>
+</ul>
+
+<h2>5. Hur länge sparas dina uppgifter?</h2>
+<ul>
+  <li><strong>Kontoinformation:</strong> Så länge ditt Formability-konto är aktivt.</li>
+  <li><strong>Användningsdata:</strong> Aggregeras efter 12 månader och raderas efter 24 månader.</li>
+  <li><strong>Sessionscookies:</strong> Upphör efter 24 timmar.</li>
+</ul>
+
+<h2>6. Dina rättigheter</h2>
+<p>Enligt GDPR har du rätt att:</p>
+<ul>
+  <li><strong>Få tillgång</strong> till dina personuppgifter.</li>
+  <li><strong>Rätta</strong> felaktiga uppgifter.</li>
+  <li><strong>Radera</strong> dina uppgifter ("rätten att bli glömd").</li>
+  <li><strong>Invända</strong> mot behandling av dina uppgifter.</li>
+  <li><strong>Flytta</strong> dina uppgifter (dataportabilitet).</li>
+</ul>
+<p>Kontakta oss på <a href="mailto:hej@formability.se">hej@formability.se</a> för att utöva dina rättigheter.</p>
+
+<h2>7. Cookies</h2>
+<p>Formability använder enbart <strong>funktionella sessionscookies</strong> för att hantera inloggning. Vi använder inga tracking-cookies, reklamcookies eller tredjepartscookies för analys.</p>
+
+<h2>8. Webbläsartillägget</h2>
+<p>Formabilitys Chrome-tillägg:</p>
+<ul>
+  <li>Körs enbart på <code>acc.autodesk.eu</code> — ingen annan webbplats påverkas.</li>
+  <li>Injicerar en sidopanel och moduler i Autodesk Formas gränssnitt.</li>
+  <li>Kommunicerar med vår backend via en bakgrundsprocess (service worker) för att hantera sessioner.</li>
+  <li>Sparar användarpreferenser (tema, widget-inställningar) lokalt i webbläsaren (<code>chrome.storage.local</code>).</li>
+  <li>Har <strong>inte</strong> tillgång till andra flikar, din webbhistorik, bokmärken eller annan webbläsardata.</li>
+</ul>
+
+<h2>9. Kontakt</h2>
+<p>
+  Formability<br>
+  Göteborg, Sverige<br>
+  E-post: <a href="mailto:hej@formability.se">hej@formability.se</a><br>
+  Webb: <a href="https://formability.se">formability.se</a>
+</p>
+
+<div class="footer">
+  &copy; 2026 Formability. Alla rättigheter förbehållna.
+</div>
+
+</div>
+</body>
+</html>
