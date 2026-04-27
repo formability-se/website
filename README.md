@@ -20,7 +20,7 @@ Modell → Kontrollplan → Formulär → Ärenden → Dagbok → Rapport → Mo
 
 | Modul | Beskrivning | Status |
 |-------|-------------|--------|
-| **Project Home** | Anpassningsbar startsida per projekt och roll | 🔨 Under utveckling |
+| **Projektsidan** | Anpassningsbar startsida per projekt och roll | 🔨 Under utveckling |
 | **Formulärbyggaren** | Egenkontroller, besiktningsprotokoll, checklistor | 🔨 Under utveckling |
 | **Ärendetavlan** | Kanban, kalender och listvy för avvikelser | 📋 Planerad |
 | **Dagboken** | Digital byggdagbok enligt PBL-krav | 📋 Planerad |
@@ -34,7 +34,7 @@ Modell → Kontrollplan → Formulär → Ärenden → Dagbok → Rapport → Mo
 Kärnan i Formability är ett Chrome-tillägg som bäddar in två ytor direkt i Forma:
 
 - **Navigator** — en kontextuell sidopanel med snabbåtkomst till alla moduler, per projekt, per roll
-- **Project Home overlay** — ersätter Formas standardvy med en konfigurerbar dashboard
+- **Projektsidan overlay** — ersätter Formas standardvy med en konfigurerbar dashboard
 
 ---
 
